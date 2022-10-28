@@ -22,12 +22,12 @@ public class FacultyController {
     }
 
     @PostMapping
-    public Faculty addFaculty(Faculty faculty) {
+    public Faculty addFaculty(@RequestBody Faculty faculty) {
         return facultyService.creatFaculty(faculty);
     }
 
     @PutMapping
-    public Faculty editFaculty(Faculty faculty) {
+    public Faculty editFaculty(@RequestBody Faculty faculty) {
         return facultyService.updateFaculty(faculty);
     }
 
@@ -39,5 +39,10 @@ public class FacultyController {
     @GetMapping
     public Collection<Faculty> getAllFaculty() {
         return facultyService.getAllFaculty();
+    }
+
+    @GetMapping("color/{color}")
+    public Collection<Faculty> getFacultyOfColor(@PathVariable String color) {
+        return facultyService.getFacultyOfColor(color);
     }
 }

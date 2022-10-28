@@ -1,11 +1,11 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.hogwarts.school.model.Faculty;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FacultyService {
@@ -14,13 +14,13 @@ public class FacultyService {
 
     private long lastId = 0;
 
-    public Faculty creatFaculty(Faculty faculty) {
+    public Faculty creatFaculty(@RequestBody Faculty faculty) {
         faculty.setId(++lastId);
         facultyMap.put(lastId, faculty);
         return faculty;
     }
 
-    public Faculty updateFaculty(Faculty faculty) {
+    public Faculty updateFaculty(@RequestBody Faculty faculty) {
         facultyMap.put(faculty.getId(), faculty);
         return faculty;
     }
@@ -35,5 +35,15 @@ public class FacultyService {
 
     public Collection<Faculty> getAllFaculty() {
         return facultyMap.values();
+    }
+
+    public Collection<Faculty> getFacultyOfColor(String color) {
+        List<Faculty> tempList = new ArrayList<>();
+        for (Faculty faculty: facultyMap.values()){
+            if (faculty.getColor().equals(color)){
+                tempList.add(faculty);
+            }
+        }
+        return tempList;
     }
 }
