@@ -14,14 +14,17 @@ public class FacultyService {
 
     private long lastId = 0;
 
-    public Faculty creatFaculty(@RequestBody Faculty faculty) {
-        faculty.setId(++lastId);
-        facultyMap.put(lastId, faculty);
+    public Faculty creatFaculty(Faculty faculty) {
+        faculty.setId(lastId++);
+        facultyMap.put(faculty.getId(), faculty);
         return faculty;
     }
 
-    public Faculty updateFaculty(@RequestBody Faculty faculty) {
-        facultyMap.put(faculty.getId(), faculty);
+    public Faculty updateFaculty(long id, Faculty faculty) {
+        if(!facultyMap.containsKey(id)){
+            return null;
+        }
+        facultyMap.put(id, faculty);
         return faculty;
     }
 

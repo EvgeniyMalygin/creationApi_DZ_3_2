@@ -13,13 +13,16 @@ public class StudentService {
     private long lastId = 0;
 
     public Student creatStudent(Student student) {
-        student.setId(++lastId);
-        studentMap.put(lastId, student);
+        student.setId(lastId++);
+        studentMap.put(student.getId(), student);
         return student;
     }
 
-    public Student updateStudent(Student student) {
-        studentMap.put(student.getId(), student);
+    public Student updateStudent(long id, Student student) {
+        if(!studentMap.containsKey(id)){
+            return null;
+        }
+        studentMap.put(id, student);
         return student;
     }
 
