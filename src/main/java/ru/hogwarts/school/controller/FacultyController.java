@@ -23,23 +23,18 @@ public class FacultyController {
     @GetMapping("{id}")
     public ResponseEntity<Faculty> findFaculty(@PathVariable long id) {
         Faculty faculty = facultyService.findFaculty(id);
-        if (faculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty);
     }
 
     @PostMapping
     public Faculty addFaculty(@RequestBody Faculty faculty) {
+
         return facultyService.creatFaculty(faculty);
     }
 
     @PutMapping
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
         Faculty foundFaculty = facultyService.updateFaculty(faculty);
-        if (foundFaculty == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
         return ResponseEntity.ok(foundFaculty);
     }
 
