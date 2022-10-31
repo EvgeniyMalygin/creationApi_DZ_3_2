@@ -20,7 +20,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity <Student> findStudent (@PathVariable long id) {
+    public ResponseEntity<Student> findStudent(@PathVariable long id) {
         Student student = studentService.findStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -34,8 +34,8 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity <Student> editStudent(@RequestBody Student student) {
-        Student foundStudent = studentService.updateStudent(student.getId(), student);
+    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
+        Student foundStudent = studentService.updateStudent(student);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -43,16 +43,18 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public Student deleteStudent(@PathVariable long id) {
-        return studentService.deleteStudent(id);
+    public ResponseEntity deleteStudent(@PathVariable long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public Collection<Student> getAllStudent() {
+
         return studentService.getAllStudent();
     }
 
-    @GetMapping
+    @GetMapping(value = "age")
     public ResponseEntity<Collection<Student>> ageOfStudent(@RequestParam(required = false) int age) {
         if (age > 0) {
             return ResponseEntity.ok(studentService.getStudentOfAge(age));
