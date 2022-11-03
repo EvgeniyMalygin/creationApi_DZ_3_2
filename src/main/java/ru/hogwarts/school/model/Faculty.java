@@ -3,6 +3,8 @@ package ru.hogwarts.school.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +15,9 @@ public class Faculty {
 
     private String name;
     private String color;
+
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> students;
 
     public Long getId() {
         return id;
@@ -37,7 +42,9 @@ public class Faculty {
     public void setColor(String color) {
         this.color = color;
     }
-
+    public Collection<Student> getStudents() {
+        return students;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,6 +52,8 @@ public class Faculty {
         Faculty faculty = (Faculty) o;
         return Objects.equals(id, faculty.id) && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
     }
+
+
 
     @Override
     public int hashCode() {
