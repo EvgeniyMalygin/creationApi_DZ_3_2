@@ -1,11 +1,11 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exceptions.NotFountException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.*;
 
@@ -13,11 +13,14 @@ import java.util.*;
 public class FacultyService {
 
    private final FacultyRepository facultyRepository;
-
-    public FacultyService(FacultyRepository facultyRepository) {
+   private final StudentRepository studentRepository;
+    public FacultyService(FacultyRepository facultyRepository, StudentRepository studentRepository) {
 
         this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
     }
+
+
 
     public Faculty creatFaculty(Faculty faculty) {
 
@@ -30,7 +33,7 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
-        return facultyRepository.findById(id).orElseThrow(()-> new NotFountException());
+        return facultyRepository.findById(id).orElseThrow(NotFountException::new);
     }
 
     public void deleteFaculty(long id){
@@ -55,7 +58,7 @@ public class FacultyService {
         return facultyRepository.findByNameIgnoreCase(name);
     }
 
-    public Collection<Student> getStudentOfFaculte(long faculte_id) {
-        return facultyRepository.findById(faculte_id).get().getStudents();
+    public Collection<Student> getStudentOfFaculte(long temp_id) {
+        return studentRepository.findStudentByFaculty_Id(temp_id);
     }
 }
