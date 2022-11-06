@@ -1,6 +1,5 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
@@ -14,7 +13,7 @@ import java.util.Collections;
 @RequestMapping("student")
 public class StudentController {
 
-    private StudentService studentService;
+    private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
@@ -66,5 +65,4 @@ public class StudentController {
     public Faculty getNumberFacultyOfStudent(@RequestParam long id) {
         return studentService.getNumberFacultyOfStudent(id);
     }
-
 }
