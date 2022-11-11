@@ -55,4 +55,15 @@ public class StudentService {
         return studentRepository.findById(student_id).get().getFaculty();
     }
 
+    public int numberOfStudentsInSchool() {
+        return studentRepository.numberOfStudentsInSchool();
+    }
+
+    public double averageAgeOfStudent() {
+        return studentRepository.averageAgeOfStudent();
+    }
+
+    public Collection<Student> getFiveLastStudents() {
+        return studentRepository.getFiveLastStudents();
+    }
 }

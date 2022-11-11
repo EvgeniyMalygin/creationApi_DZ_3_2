@@ -15,6 +15,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("avatar")
@@ -24,6 +27,7 @@ public class AvatarController {
     private final AvatarService avatarService;
 
     public AvatarController(AvatarService avatarService) {
+
         this.avatarService = avatarService;
     }
 
@@ -44,18 +48,22 @@ public class AvatarController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
     }
 
-@GetMapping(value = "/{id}/avatar")
+    @GetMapping(value = "/{id}/avatar")
     public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
-    Avatar avatar = avatarService.findAvatar(id);
-    Path path = Path.of(avatar.getFilePath());
-    try (InputStream is = Files.newInputStream(path);
-         OutputStream os = response.getOutputStream()){
-        response.setStatus(200);
-        response.setContentType(avatar.getMediaType());
-        response.setContentLength((int) avatar.getFileSize());
-        is.transferTo(os);
+        Avatar avatar = avatarService.findAvatar(id);
+        Path path = Path.of(avatar.getFilePath());
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = response.getOutputStream()) {
+            response.setStatus(200);
+            response.setContentType(avatar.getMediaType());
+            response.setContentLength((int) avatar.getFileSize());
+            is.transferTo(os);
+        }
     }
-}
 
-
+    @GetMapping("avatarsFromPage")
+    public List<Avatar> getAvatarFromPage(@RequestParam("page") Integer pageNumber,
+                                          @RequestParam("size") Integer pageSize) {
+        return avatarService.getAvatarFromPage(pageNumber, pageSize);
+    }
 }
