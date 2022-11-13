@@ -1,12 +1,12 @@
 CREATE TABLE person (
-                        Id SERIAL PRIMARY KEY,
-                        Name TEXT,
-                        Age INTEGER,
-                        Rights BOOLEAN,
-                        Car_id BIGINT);
+                        id SERIAL PRIMARY KEY,
+                        name TEXT,
+                        age INTEGER,
+                        rights BOOLEAN,
+                        car_id BIGINT REFERENCES car (id));
 
 CREATE TABLE car (
-                     Id SERIAL PRIMARY KEY,
-                     Make_car TEXT,
-                     Model_car TEXT,
-                     Price_car REAL);
+                     id SERIAL PRIMARY KEY,
+                     make_car TEXT,
+                     model_car TEXT,
+                     price_car REAL);
