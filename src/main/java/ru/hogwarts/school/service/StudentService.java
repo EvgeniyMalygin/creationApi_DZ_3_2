@@ -1,34 +1,69 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exceptions.NotFountException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.AvatarRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 
 @Service
 public class StudentService {
 
-    private final Map<Long, Student> studentMap = new HashMap<>();
+    private final StudentRepository studentRepository;
 
-    private long lastId = 0;
-
-    public Student creatStudent(Student student) {
-        student.setId(++lastId);
-        studentMap.put(lastId, student);
-        return student;
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    public Student updateStudent(Student student) {
-        studentMap.put(student.getId(), student);
-        return student;
+    public Student creatStudent(Student student) {
+        return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
-        return studentMap.get(id);
+        return studentRepository.findById(id).orElseThrow(() -> new NotFountException());
     }
 
-    public Student deleteStudent(long id) {
-        return studentMap.remove(id);
+    public Student updateStudent(Student student) {
+
+        return studentRepository.save(student);
+    }
+
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
+    }
+
+    public Collection<Student> getAllStudent() {
+        return studentRepository.findAll();
+    }
+
+    public Collection<Student> getStudentOfAge(int age) {
+        return studentRepository.findByAge(age);
+    }
+
+    public Collection<Student> getStudentAgeBetweenMinMax(int min, int max) {
+        if (min < 0 || max < 0 || min > max) {
+            throw new IllegalArgumentException();
+        }
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public Faculty getNumberFacultyOfStudent(long student_id) {
+        return studentRepository.findById(student_id).get().getFaculty();
+    }
+
+    public int numberOfStudentsInSchool() {
+        return studentRepository.numberOfStudentsInSchool();
+    }
+
+    public double averageAgeOfStudent() {
+        return studentRepository.averageAgeOfStudent();
+    }
+
+    public Collection<Student> getFiveLastStudents() {
+        return studentRepository.getFiveLastStudents();
     }
 }
