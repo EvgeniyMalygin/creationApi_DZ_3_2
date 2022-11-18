@@ -72,4 +72,9 @@ public class FacultyController {
     public ResponseEntity<Collection<Student>> getStudentOfFaculte(@RequestParam long temp_id){
         return ResponseEntity.ok(facultyService.getStudentOfFaculte(temp_id));
     }
+
+    @GetMapping("/Longest-title-of-faculty")
+    public String getLongestTitleOfFaculty() {
+        return facultyService.getLongestTitleOfFaculty();
+    }
 }

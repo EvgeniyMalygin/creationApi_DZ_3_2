@@ -82,4 +82,13 @@ public class StudentController {
 
     }
 
+    @GetMapping("/student-name-A")
+    public Collection<String> getStudentWithNameOfA() {
+        return studentService.getStudentWithNameOfA();
+    }
+
+    @GetMapping("/average-age-student-v1")
+    public int averageAgeOfStudentStream() {
+        return studentService.averageAgeOfStudentStream();
+    }
 }

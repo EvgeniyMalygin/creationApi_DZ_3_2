@@ -66,4 +66,9 @@ public class AvatarController {
                                           @RequestParam("size") Integer pageSize) {
         return avatarService.getAvatarFromPage(pageNumber, pageSize);
     }
+
+    @GetMapping("/summa")
+    public int summa() {
+        return avatarService.summa();
+    }
 }

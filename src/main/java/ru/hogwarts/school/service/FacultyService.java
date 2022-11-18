@@ -68,4 +68,8 @@ public class FacultyService {
         logger.info("Запущен метод getStudentOfFaculte");
         return studentRepository.findStudentByFaculty_Id(temp_id);
     }
+
+    public String getLongestTitleOfFaculty() {
+        return facultyRepository.findAll().stream().map(Faculty::getName).max(Comparator.comparing(String::length)).toString();
+    }
 }

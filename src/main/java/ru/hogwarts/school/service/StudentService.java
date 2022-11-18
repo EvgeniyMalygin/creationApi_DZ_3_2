@@ -10,6 +10,7 @@ import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,7 +30,7 @@ public class StudentService {
 
     public Student findStudent(long id) {
         logger.info("Запущен метод findStudent");
-        return studentRepository.findById(id).orElseThrow(() -> new NotFountException());
+        return studentRepository.findById(id).orElseThrow(NotFountException::new);
     }
 
     public Student updateStudent(Student student) {
@@ -80,4 +81,15 @@ public class StudentService {
         logger.info("Запущен метод getFiveLastStudents");
         return studentRepository.getFiveLastStudents();
     }
+
+    public Collection<String> getStudentWithNameOfA() {
+        return  studentRepository.findAll().stream().filter(st -> st.getName().toUpperCase().charAt(0) == 'А')
+                .sorted(new StudentComparator()).map(Student::getName).collect(Collectors.toList());
+    }
+
+    public int averageAgeOfStudentStream() {
+        List<Student> tempList = new ArrayList<>(studentRepository.findAll());
+        return tempList.stream().map(Student::getAge).reduce(0, (a, b) -> a + b) / tempList.size();
+    }
+
 }
