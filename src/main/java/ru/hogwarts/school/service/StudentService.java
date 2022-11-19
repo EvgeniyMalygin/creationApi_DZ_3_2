@@ -18,6 +18,7 @@ public class StudentService {
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
+    Object flag = new Object();
 
     public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
@@ -83,7 +84,7 @@ public class StudentService {
     }
 
     public Collection<String> getStudentWithNameOfA() {
-        return  studentRepository.findAll().stream().filter(st -> st.getName().toUpperCase().charAt(0) == 'А')
+        return studentRepository.findAll().stream().filter(st -> st.getName().toUpperCase().charAt(0) == 'А')
                 .sorted(new StudentComparator()).map(Student::getName).collect(Collectors.toList());
     }
 
@@ -92,4 +93,55 @@ public class StudentService {
         return tempList.stream().map(Student::getAge).reduce(0, (a, b) -> a + b) / tempList.size();
     }
 
+    public void getStudentThread() {
+        ArrayList<Student> tempList = new ArrayList<>(studentRepository.findAll());
+
+        printStudent(tempList.get(0).getName());
+        printStudent(tempList.get(1).getName());
+
+        new Thread(() -> {
+            printStudent(tempList.get(2).getName());
+            printStudent(tempList.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            printStudent(tempList.get(4).getName());
+            printStudent(tempList.get(5).getName());
+        }).start();
+    }
+
+    public void printStudent(String name) {
+        System.out.println(name);
+        String s = "";
+        for (int i = 0; i < 10000; i++) {  //без задержки имена выводяться без изменения порядка
+            s += i;
+        }
+    }
+
+    public void getStudentThreadSynchronized() {
+        ArrayList<Student> tempList = new ArrayList<>(studentRepository.findAll());
+
+        printStudentSynchronized(tempList.get(0).getName());
+        printStudentSynchronized(tempList.get(1).getName());
+
+        new Thread(() -> {
+            printStudentSynchronized(tempList.get(2).getName());
+            printStudentSynchronized(tempList.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            printStudentSynchronized(tempList.get(4).getName());
+            printStudentSynchronized(tempList.get(5).getName());
+        }).start();
+    }
+
+    public void printStudentSynchronized(String name) {
+        synchronized (flag) {
+            System.out.println(name);
+        }
+        String s = "";
+        for (int i = 0; i < 10000; i++) {  //без задержки имена выводяться без изменения порядка
+            s += i;
+        }
+    }
 }

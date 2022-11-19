@@ -91,4 +91,14 @@ public class StudentController {
     public int averageAgeOfStudentStream() {
         return studentService.averageAgeOfStudentStream();
     }
+
+    @GetMapping("/student-thread")
+    public void getStudentThread() {
+        studentService.getStudentThread();
+    }
+
+    @GetMapping("/student-thread-synchronized")
+    public void getStudentThreadSynchronized() {
+        studentService.getStudentThreadSynchronized();
+    }
 }
